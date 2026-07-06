@@ -1,0 +1,63 @@
+=================================================================
+  FÜLLWÖRTER-ANALYSE REPORT
+=================================================================
+  Datei     : 2026-07-02 09-02-52_transkript.txt
+  Datum     : 04.07.2026 15:43
+  Dauer     : 16:56 min
+=================================================================
+
+  GESAMTSCORE
+-----------------------------------------------------------------
+  100/100
+
+  [████████████████████]
+
+=================================================================
+  KATEGORIE 1: HESITATIONSLAUTE
+-----------------------------------------------------------------
+  Bewertung  : ✅ Optimal
+  Total      : 0x
+  Pro Minute : 0.0/min
+  Häufigste  : keine gefunden
+  Zeitstrahl :
+  [keine gefunden]
+
+=================================================================
+  KATEGORIE 2: WEICHMACHER
+-----------------------------------------------------------------
+  Bewertung  : ✅ Optimal
+  Total      : 11x
+  Pro Minute : 0.6/min
+  Häufigste  : eigentlich (2x), etwas (2x), irgendwo (1x), ungefähr (1x), ziemlich (1x)
+  Zeitstrahl :
+  0min |-|--------|--|-------|------------||------||-|-----------|- 16min
+
+=================================================================
+  KATEGORIE 3: LEICHTE FÜLLWÖRTER
+-----------------------------------------------------------------
+  Bewertung  : ✅ Optimal
+  Total      : 118x
+  Pro Minute : 7.0/min
+  Häufigste  : so (43x), also (37x), sehr (11x), mal (7x), ja (4x), wirklich (4x), richtig (2x), genau (2x)
+  Zeitstrahl :
+  0min -|||||||||||||||||||||||||||-||||-||||||||||||-|||||-||||||- 16min
+
+=================================================================
+  FEEDBACK & VERBESSERUNGSVORSCHLÄGE
+=================================================================
+
+  HESITATIONSLAUTE — ✅ Optimal (0.0/min)
+    Sehr gut: Keine hörbaren 'ähm' oder 'äh' — das wirkt souverän und professionell. Weiter so!
+
+  WEICHMACHER — ✅ Optimal (0.6/min)
+    Sehr gut: Die Balance stimmt — deine Sprache ist bestimmt aber nicht steif. Verwendet: 'eigentlich' (2x), 'etwas' (2x), 'irgendwo' (1x). Kein Handlungsbedarf.
+
+  LEICHTE FÜLLWÖRTER — ✅ Optimal (7.0/min)
+    Sehr gut: Natürlicher, flüssiger Sprachfluss. Häufigste: 'so' (43x), 'also' (37x), 'sehr' (11x). Kein Handlungsbedarf.
+
+  GESAMTFAZIT
+    Alle drei Kategorien im optimalen Bereich — hervorragende Präsentation in Bezug auf Füllwörter! Behalte dieses Niveau bei.
+
+=================================================================
+  Ende des Reports
+=================================================================
