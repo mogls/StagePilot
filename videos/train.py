@@ -21,7 +21,7 @@ import torch.nn as nn
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
-from dataset import make_loaders, SCORE_COLUMNS
+from dataset import make_loaders, SCORE_COLUMNS, USE_GROUPS
 from model import STGCN, SkeletonLSTM, load_pretrained, body25_edges
 
 
@@ -39,7 +39,8 @@ def parse_args():
     p.add_argument("--batch_size",  default=8,   type=int)
     p.add_argument("--lr",          default=1e-3, type=float)
     p.add_argument("--frames",      default=150, type=int,  help="Frames per clip")
-    p.add_argument("--n_joints",    default=25,  type=int,  help="Number of joints")
+    p.add_argument("--n_joints",    default=None, type=int,
+                   help="Override joint count (default: auto-detected from USE_GROUPS)")
     p.add_argument("--dropout",     default=0.5, type=float)
     p.add_argument("--freeze_epochs", default=10, type=int,
                    help="Epochs to train head only before unfreezing backbone")
@@ -173,8 +174,9 @@ def main():
         target_frames=args.frames,
         num_workers=args.workers,
     )
-    # Use detected joints unless overridden
-    n_joints = args.n_joints or n_joints
+    # Override joint count only when explicitly supplied on the command line
+    if args.n_joints is not None:
+        n_joints = args.n_joints
 
     # --- Model ---
     print(f"\nBuilding {args.model.upper()} model...")
@@ -210,7 +212,7 @@ def main():
         lr=args.lr, weight_decay=1e-4
     )
     scheduler = ReduceLROnPlateau(optimizer, mode="min", factor=0.5,
-                                  patience=5, verbose=True)
+                                  patience=5)
     early_stop = EarlyStopping(patience=15)
 
     # --- Training state ---
@@ -234,7 +236,7 @@ def main():
             optimizer = Adam(model.parameters(),
                              lr=args.lr * 0.1, weight_decay=1e-4)
             scheduler = ReduceLROnPlateau(optimizer, mode="min", factor=0.5,
-                                          patience=5, verbose=True)
+                                          patience=5)
             backbone_unfrozen = True
 
         # Train
@@ -284,6 +286,7 @@ def main():
                     "score_columns": SCORE_COLUMNS,
                     "target_frames": args.frames,
                     "dropout": args.dropout,
+                    "use_groups": USE_GROUPS,
                 },
             }, ckpt_path)
             print(f"  ✓ New best model saved (val_loss={val_loss:.4f})")

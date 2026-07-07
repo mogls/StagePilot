@@ -45,9 +45,10 @@ def build_adjacency(n_joints, edges, strategy="distance"):
         # Add self-loops
         for i in range(n_joints):
             A[0, i, i] = 1
-        # Normalize rows
+        # Normalize rows (safe reciprocal avoids divide-by-zero warning)
         D = A[0].sum(axis=1)
-        D_inv = np.where(D > 0, 1.0 / D, 0)
+        D_inv = np.zeros_like(D)
+        D_inv[D > 0] = 1.0 / D[D > 0]
         A[0] = np.diag(D_inv) @ A[0]
         return A
 
@@ -84,10 +85,11 @@ def build_adjacency(n_joints, edges, strategy="distance"):
                 else:
                     A[2, i, j] = 1                # centrifugal
 
-    # Normalize each matrix
+    # Normalize each matrix (safe reciprocal avoids divide-by-zero warning)
     for k in range(3):
         D = A[k].sum(axis=1)
-        D_inv = np.where(D > 0, 1.0 / D, 0)
+        D_inv = np.zeros_like(D)
+        D_inv[D > 0] = 1.0 / D[D > 0]
         A[k] = np.diag(D_inv) @ A[k]
 
     return A

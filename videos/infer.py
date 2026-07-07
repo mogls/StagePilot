@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from dataset import SkeletonDataset, SCORE_COLUMNS
+from dataset import SkeletonDataset, extract_skeleton, SCORE_COLUMNS
 from model import STGCN, SkeletonLSTM, body25_edges
 
 
@@ -58,14 +58,20 @@ def score_clip(pkl_path, model, cfg, device):
     Run inference on a single pickle file.
     Returns a dict of {dimension: score} values.
     """
-    # Reuse the dataset's preprocessing logic
-    dummy_dataset = SkeletonDataset.__new__(SkeletonDataset)
-    dummy_dataset.target_frames = cfg["target_frames"]
-    dummy_dataset.augment = False
+    use_groups = cfg.get("use_groups", ["pose_keypoints",
+                                        "hand_left_keypoints",
+                                        "hand_right_keypoints"])
 
-    skeleton = dummy_dataset._load_pickle(pkl_path)
-    skeleton = dummy_dataset._normalize(skeleton)
-    skeleton = dummy_dataset._resample(skeleton)
+    # Reuse the dataset's preprocessing logic via a lightweight helper instance
+    helper = SkeletonDataset.__new__(SkeletonDataset)
+    helper.target_frames = cfg["target_frames"]
+    helper.use_groups    = use_groups
+    helper.augment       = False
+
+    raw      = SkeletonDataset._load_pickle(pkl_path)
+    skeleton = extract_skeleton(raw, use_groups)
+    skeleton = helper._normalize(skeleton)
+    skeleton = helper._resample(skeleton)
 
     # (C, T, V) → add batch dim → (1, C, T, V)
     tensor = torch.FloatTensor(skeleton).permute(2, 0, 1).unsqueeze(0).to(device)

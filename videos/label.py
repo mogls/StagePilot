@@ -133,8 +133,21 @@ def main():
             clip_index[row["filename"].strip()] = row
         print(f"Loaded clip index: {index_path} ({len(clip_index)} clips)")
 
-    pkl_files = sorted([f for f in os.listdir(args.data_dir) if f.endswith(".pickle")])
-    print(f"\nFound {len(pkl_files)} .pickle files in {args.data_dir}")
+    # Collect all .pickle files recursively (handles subdirectory layouts)
+    pkl_files = sorted([
+        fname
+        for dirpath, _dirs, files in os.walk(args.data_dir)
+        for fname in files
+        if fname.endswith(".pickle")
+    ])
+    print(f"\nFound {len(pkl_files)} .pickle files under {args.data_dir}")
+
+    # Build index of filename -> full path for peek_clip
+    _path_index = {}
+    for dirpath, _dirs, files in os.walk(args.data_dir):
+        for fname in files:
+            if fname.endswith(".pickle"):
+                _path_index[fname] = os.path.join(dirpath, fname)
 
     done_set, rows = load_existing(args.output)
     remaining = [f for f in pkl_files if f not in done_set]
@@ -153,7 +166,7 @@ def main():
     last_scores = {col: 0.5 for col in SCORE_COLUMNS}
 
     for i, fname in enumerate(remaining):
-        pkl_path = os.path.join(args.data_dir, fname)
+        pkl_path = _path_index.get(fname, os.path.join(args.data_dir, fname))
 
         print(f"\n[{i+1}/{len(remaining)}] {fname}")
         if fname in clip_index:
