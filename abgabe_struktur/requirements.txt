@@ -1,0 +1,36 @@
+# ── präsentation_ai — Python dependencies ──────────────────────────────────
+# Install with:  pip install -r requirements.txt
+#
+# After that, install the spaCy German language model (one-time, ~40 MB):
+#   python -m spacy download de_core_news_sm
+#
+# System dependency (not pip-installable):
+#   ffmpeg  — required for audio extraction from video files
+#   Install via your OS package manager:
+#     Windows : winget install ffmpeg   OR   choco install ffmpeg
+#     macOS   : brew install ffmpeg
+#     Linux   : sudo apt install ffmpeg
+# ────────────────────────────────────────────────────────────────────────────
+
+# Transcription (Whisper)
+openai-whisper>=20231117
+
+# NLP / Content analysis
+spacy>=3.7
+transformers>=4.38
+
+# Deep learning (audio emotion + video skeleton model)
+torch>=2.1
+torchaudio>=2.1           # required by some transformers audio pipelines at runtime
+
+# Audio analysis
+librosa>=0.10
+soundfile>=0.12           # librosa audio I/O backend
+
+# Video / Skeleton extraction
+mediapipe>=0.10
+opencv-python>=4.9
+
+# Data
+numpy>=1.26
+pandas>=2.1
